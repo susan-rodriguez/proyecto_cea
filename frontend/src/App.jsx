@@ -69,9 +69,9 @@ function TotemView({ currentConsejos, onNavigateToPlay, onAddLog }) {
   useEffect(() => {
     let isMounted = true;
     setLoading(true);
-    onAddLog('Fetch /api/consejo', 'Iniciando reclamo a http://127.0.0.1:5000/api/consejo', true);
+    onAddLog('Fetch /api/consejo', 'Iniciando reclamo a https://proyecto-cea.onrender.com/api/consejo', true);
 
-    fetch('http://127.0.0.1:5000/api/consejo')
+    fetch('https://proyecto-cea.onrender.com/api/consejo')
       .then(async (response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const data = await response.json();
@@ -213,9 +213,9 @@ function PlayView({ currentQuestions, stats, onUpdateStats, onAddLog, onResetPla
   useEffect(() => {
     let isMounted = true;
     setLoading(true);
-    onAddLog('Fetch /api/trivia', 'Iniciando reclamo a http://127.0.0.1:5000/api/trivia', true);
+    onAddLog('Fetch /api/trivia', 'Iniciando reclamo a https://proyecto-cea.onrender.com/api/trivia', true);
 
-    fetch('http://127.0.0.1:5000/api/trivia')
+    fetch('https://proyecto-cea.onrender.com/api/trivia')
       .then(async (response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const data = await response.json();
@@ -268,7 +268,7 @@ function PlayView({ currentQuestions, stats, onUpdateStats, onAddLog, onResetPla
     setPostStatus('sending');
     try {
       // OJO: Cambié 'questionId' a 'preguntaId' para que calce con tu Flask del backend
-      const response = await fetch('http://127.0.0.1:5000/api/trivia', {
+      const response = await fetch('https://proyecto-cea.onrender.com/api/trivia', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ preguntaId: activeQuestion.id, respuesta: option })
@@ -555,7 +555,6 @@ app.listen(5000, () => console.log('Servidor en puerto 5000'));`;
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 glass p-6 rounded-3xl border border-white/40 shadow-md mb-8">
         <div>
           <h1 className="text-2xl font-display font-black text-emerald-950 tracking-tight">Control Panel CEA</h1>
-          <p className="text-emerald-800 text-xs">Administración de contenidos del Centro y simulación en Puerto 5000.</p>
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
@@ -622,13 +621,6 @@ app.listen(5000, () => console.log('Servidor en puerto 5000'));`;
               <textarea value={questionExplicacion} onChange={e => setQuestionExplicacion(e.target.value)} placeholder="Explicación Educativa" className="w-full border rounded-xl p-2.5 text-xs bg-white/40 text-emerald-950" />
               <button type="submit" className="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 rounded-xl text-xs">Agregar Pregunta</button>
             </form>
-          )}
-
-          {activeTab === 'servidores' && (
-            <div className="text-emerald-950 text-xs space-y-3">
-              <h4 className="font-bold">🔌 ¿Cómo se integra?</h4>
-              <p>Puedes levantar un servidor local en el puerto 5000 usando los códigos mostrados. Si no lo haces, la app corre en modo simulado para que puedas probarla sin obstáculos.</p>
-            </div>
           )}
 
           {activeTab === 'logs' && (
@@ -761,7 +753,7 @@ export default function App() {
   // 2. NUEVO/MODIFICADO: Efecto inicial para jalar TODO (Preguntas y Consejos) desde tu Flask
   useEffect(() => {
     // Cargar preguntas de la BD
-    fetch('http://127.0.0.1:5000/api/trivia')
+    fetch('https://proyecto-cea.onrender.com/api/trivia')
       .then(res => res.json())
       .then(data => {
         const fetched = Array.isArray(data) ? data : [data];
@@ -774,7 +766,7 @@ export default function App() {
       });
 
     // Cargar consejos de la BD (Hacemos un GET global a tu ruta)
-    fetch('http://127.0.0.1:5000/api/consejo')
+    fetch('https://proyecto-cea.onrender.com/api/consejo')
       .then(res => res.json())
       .then(data => {
         // Como tu backend actual devuelve uno random, lo metemos en un arreglo para el panel admin.
@@ -824,7 +816,7 @@ export default function App() {
 
   // 3. MODIFICADO: POST real para Consejos
   const handleAddConsejo = (newConsejo) => {
-    fetch('http://127.0.0.1:5000/api/consejo', {
+    fetch('https://proyecto-cea.onrender.com/api/consejo', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -851,7 +843,7 @@ export default function App() {
 
   // 4. MODIFICADO: POST real para Preguntas
   const handleAddQuestion = (newQ) => {
-    fetch('http://127.0.0.1:5000/api/trivia', {
+    fetch('https://proyecto-cea.onrender.com/api/trivia', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -884,7 +876,7 @@ export default function App() {
   const handleDeleteQuestion = (idCompleto) => {
     const idLimpio = String(idCompleto).replace('trivia-', '');
     
-    fetch(`http://127.0.0.1:5000/api/trivia/${idLimpio}`, {
+    fetch(`https://proyecto-cea.onrender.com/api/trivia/${idLimpio}`, {
       method: 'DELETE'
     })
     .then(res => {
@@ -898,7 +890,7 @@ export default function App() {
   const handleDeleteConsejo = (idCompleto) => {
     const idLimpio = String(idCompleto).replace('consejo-', '');
 
-    fetch(`http://127.0.0.1:5000/api/consejo/${idLimpio}`, {
+    fetch(`https://proyecto-cea.onrender.com/api/consejo/${idLimpio}`, {
       method: 'DELETE'
     })
     .then(res => {
