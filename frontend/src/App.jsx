@@ -69,7 +69,7 @@ function TotemView({ currentConsejos, onNavigateToPlay, onAddLog }) {
   useEffect(() => {
     let isMounted = true;
     setLoading(true);
-    onAddLog('Fetch /api/consejo', 'Iniciando reclamo a https://proyecto-cea.onrender.com/api/consejo', true);
+    onAddLog('Fetch /api/consejo', 'Iniciando request https://proyecto-cea.onrender.com/api/consejo', true);
 
     fetch('https://proyecto-cea.onrender.com/api/consejo')
       .then(async (response) => {
@@ -212,7 +212,7 @@ function PlayView({ currentQuestions, stats, onUpdateStats, onAddLog, onResetPla
   useEffect(() => {
     let isMounted = true;
     setLoading(true);
-    onAddLog('Fetch /api/trivia', 'Iniciando reclamo a https://proyecto-cea.onrender.com/api/trivia', true);
+    onAddLog('Fetch /api/trivia', 'Iniciando request https://proyecto-cea.onrender.com/api/trivia', true);
 
     fetch('https://proyecto-cea.onrender.com/api/trivia')
       .then(async (response) => {
@@ -238,7 +238,7 @@ function PlayView({ currentQuestions, stats, onUpdateStats, onAddLog, onResetPla
     
           setConnectionStatus('success');
           setLoading(false);
-          onAddLog('Fetch /api/trivia exitoso', `Trivia cargada remotamente. Total: ${fetchedQuestions.length}`, true);
+          onAddLog('Fetch /api/trivia exitoso', `Trivia cargada. Total: ${fetchedQuestions.length}`, true);
         }
       })
       .catch(() => {
