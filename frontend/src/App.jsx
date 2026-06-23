@@ -579,6 +579,9 @@ app.listen(5000, () => console.log('Servidor en puerto 5000'));`;
         <button onClick={() => setActiveTab('trivia')} className={`px-4 py-3 text-xs uppercase tracking-wider rounded-t-xl cursor-pointer ${activeTab==='trivia'?'bg-white/30 text-emerald-950 font-black':'text-emerald-800/80'}`}>
           Preguntas ({currentQuestions.length})
         </button>
+        <button onClick={() => setActiveTab('logs')} className={`px-4 py-3 text-xs uppercase tracking-wider rounded-t-xl cursor-pointer ${activeTab==='logs'?'bg-white/30 text-emerald-950 font-black':'text-emerald-800/80'}`}>
+          Consola Red ({logs.length})
+        </button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
