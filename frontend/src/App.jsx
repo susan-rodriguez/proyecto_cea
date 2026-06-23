@@ -107,8 +107,8 @@ function TotemView({ currentConsejos, onNavigateToPlay, onAddLog }) {
   // === 1. CONFIGURACIÓN DEL QR DINÁMICO PARA LA NUBE ===
   const mobilePlayUrl = "https://proyecto-cea.netlify.app/?view=play";
   
-  // Api de Google que genera el QR con fondo transparente/blanco de 200x200px
-  const qrImageUrl = `https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=${encodeURIComponent(mobilePlayUrl)}`;
+  // Cambiamos la API muerta de Google por QR Server (Mismo tamaño 200x200)
+  const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(mobilePlayUrl)}`;
 
   return (
     <div id="totem-interface" className="fade-in max-w-6xl mx-auto py-4 px-4 relative z-10">
