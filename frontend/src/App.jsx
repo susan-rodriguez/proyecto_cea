@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { 
   Leaf, Settings, QrCode, RefreshCw, HelpCircle, Database, 
   ArrowRight, Plus, Trash2, Award, Server, LogOut, Activity, 
-  CheckCircle2, XCircle, Star, Sparkles
+  CheckCircle2, XCircle, Star, Sparkles, MapPin // <-- Metí MapPin para el mapa, de pana
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -104,20 +104,22 @@ function TotemView({ currentConsejos, onNavigateToPlay, onAddLog }) {
     return 'bg-indigo-100 text-indigo-800 border-indigo-200';
   };
 
-  // === 1. CONFIGURACIÓN DEL QR DINÁMICO PARA LA NUBE ===
   const mobilePlayUrl = "https://proyecto-cea.netlify.app/?view=play";
-  
-  // Cambiamos la API muerta de Google por QR Server (Mismo tamaño 200x200)
   const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(mobilePlayUrl)}`;
+  
+  // QR trucho para descargar el manual de buenas prácticas del CEA
+  const manualUrl = "https://www.google.com/search?q=manual+buenas+practicas+ambientales+pdf";
+  const qrManualUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(manualUrl)}`;
 
   return (
-    <div id="totem-interface" className="fade-in max-w-6xl mx-auto py-4 px-4 relative z-10">
+    <div id="totem-interface" className="fade-in max-w-6xl mx-auto py-4 px-4 relative z-10 space-y-8">
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3 glass p-4 rounded-2xl shadow-sm border border-white/45">
         <div className="flex items-center gap-2.5">
           <div className={`w-3 h-3 rounded-full ${connectionStatus === 'success' ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`} />
         </div>
       </div>
 
+      {/* --- SECCIÓN 1: SEÑALÉTICA PRINCIPAL Y TRIVIA MÓVIL --- */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
         <div className="lg:col-span-7 flex flex-col justify-between glass text-emerald-950 rounded-3xl p-8 shadow-xl relative overflow-hidden min-h-[450px] border border-white/35">
           <div className="relative z-10">
@@ -125,7 +127,7 @@ function TotemView({ currentConsejos, onNavigateToPlay, onAddLog }) {
               <Leaf className="w-3.5 h-3.5 animate-bounce" /> Portal de Conciencia Ambiental
             </span>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-black leading-tight text-emerald-900 tracking-tight mt-4">
-              Respira la <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-700 to-emerald-500">Naturaleza.</span>
+              Respira la <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-700 to-gradient-500">Naturaleza.</span>
             </h1>
           </div>
 
@@ -171,7 +173,6 @@ function TotemView({ currentConsejos, onNavigateToPlay, onAddLog }) {
             <p className="text-emerald-800 text-xs mt-2 px-4">Escanea el código QR desde tu smartphone para responder preguntas y probar tus conocimientos ecológicos.</p>
           </div>
 
-          {/* === 2. MODIFICADO SUTILMENTE: Reemplazamos los divs estáticos por el QR real === */}
           <div className="my-6 p-5 bg-white/40 rounded-3xl border border-white/50 relative shadow-sm">
             <div className="w-48 h-48 bg-white p-2 rounded-2xl shadow-xs flex items-center justify-center relative overflow-hidden">
               <img 
@@ -192,6 +193,86 @@ function TotemView({ currentConsejos, onNavigateToPlay, onAddLog }) {
           </div>
         </div>
       </div>
+
+      {/* --- NUEVA SECCIÓN 2: CARTELERÍA INTERACTIVA (LOGROS + MANUAL QR) --- */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+        {/* Bloque Izquierdo: Los indicadores truchos de impacto del CEA */}
+        <div className="lg:col-span-8 glass border border-white/35 rounded-3xl p-6 md:p-8 shadow-lg flex flex-col justify-between">
+          <div>
+            <h2 className="text-xl font-display font-black text-emerald-900 tracking-tight mb-4">
+              Impacto Ambiental Eco-INACAP
+            </h2>
+            <p className="text-xs text-emerald-800 mb-6">
+              Datos estimados del monitoreo de buenas prácticas implementadas en nuestra sede este mes:
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="bg-white/50 border border-white/40 rounded-2xl p-4 text-center shadow-xs">
+              <span className="text-2xl block mb-1">💧</span>
+              <span className="text-xs text-emerald-800 font-mono uppercase block font-bold">Agua Recuperada</span>
+              <span className="text-xl font-black text-cyan-800 block mt-1">1,200 Litros</span>
+              <span className="text-[10px] text-stone-500 block">Sistemas de riego CEA</span>
+            </div>
+
+            <div className="bg-white/50 border border-white/40 rounded-2xl p-4 text-center shadow-xs">
+              <span className="text-2xl block mb-1">⚡</span>
+              <span className="text-xs text-emerald-800 font-mono uppercase block font-bold">Energía Limpia</span>
+              <span className="text-xl font-black text-amber-700 block mt-1">340 kWh</span>
+              <span className="text-[10px] text-stone-500 block">Paneles solares piloto</span>
+            </div>
+
+            <div className="bg-white/50 border border-white/40 rounded-2xl p-4 text-center shadow-xs">
+              <span className="text-2xl block mb-1">📉</span>
+              <span className="text-xs text-emerald-800 font-mono uppercase block font-bold">CO2 Reducido</span>
+              <span className="text-xl font-black text-emerald-800 block mt-1">12% Menos</span>
+              <span className="text-[10px] text-stone-500 block">vs. Semestre anterior</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Bloque Derecho: QR para descargar el Manual Educativo */}
+        <div className="lg:col-span-4 glass border border-white/35 rounded-3xl p-6 shadow-lg flex flex-col sm:flex-row lg:flex-col items-center justify-between gap-4 text-center sm:text-left lg:text-center">
+          <div className="flex-1">
+            <h4 className="text-xs font-mono uppercase font-black text-emerald-800 mb-1">📖 Educación CEA</h4>
+            <h3 className="text-base font-bold text-emerald-950 leading-tight">Guía de Buenas Prácticas</h3>
+            <p className="text-[11px] text-emerald-800 mt-2 max-w-xs">
+              Escanea este código para llevarte el manual en PDF y aprender a replicar estos hábitos verdes en tu hogar.
+            </p>
+          </div>
+
+          <div className="p-3 bg-white/60 rounded-2xl border border-white shadow-xs shrink-0 mx-auto">
+            <img 
+              src={qrManualUrl} 
+              alt="QR Manual CEA" 
+              className="w-28 h-28 object-contain"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* --- SECCIÓN 3: MAPA INTERACTIVO INACAP SANTIAGO CENTRO --- */}
+      <div className="glass border border-white/35 rounded-3xl p-6 md:p-8 shadow-lg">
+        <div className="mb-4 flex items-center gap-2">
+          <span className="p-2 bg-emerald-700 text-white rounded-xl shadow-xs">
+            <MapPin className="w-4 h-4" />
+          </span>
+          <div>
+            <h2 className="text-xl font-display font-black text-emerald-900 tracking-tight">Punto de Encuentro Verde</h2>
+            <p className="text-xs text-emerald-800">Ubicación oficial del Tótem CEA en INACAP Santiago Centro</p>
+          </div>
+        </div>
+        <div className="w-full h-72 rounded-2xl overflow-hidden border border-white/40 shadow-inner bg-white/35">
+          <iframe
+            src="https://maps.google.com/maps?q=INACAP%20Santiago%20Centro,%20Almirante%2520Barroso%2076,%20Santiago&t=&z=15&ie=UTF8&iwloc=&output=embed"
+            className="w-full h-full border-none"
+            allowFullScreen=""
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            title="Mapa INACAP Santiago Centro"
+          />
+        </div>
+      </div>
     </div>
   );
 }
@@ -206,7 +287,6 @@ function PlayView({ currentQuestions, stats, onUpdateStats, onAddLog, onResetPla
   const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const [postStatus, setPostStatus] = useState('idle');
-  // NUEVO: Estado para saber si el usuario terminó todas las preguntas de la BD
   const [isFinished, setIsFinished] = useState(false);
 
   useEffect(() => {
@@ -225,7 +305,6 @@ function PlayView({ currentQuestions, stats, onUpdateStats, onAddLog, onResetPla
             
             const savedIndex = localStorage.getItem('cea_play_index');
             const idx = savedIndex ? parseInt(savedIndex) : 0;
-            // Si el índice guardado es mayor o igual a las preguntas que hay, lo reseteamos a 0
             if (idx < fetchedQuestions.length) {
               setCurrentIndex(idx);
             } else {
@@ -266,7 +345,6 @@ function PlayView({ currentQuestions, stats, onUpdateStats, onAddLog, onResetPla
 
     setPostStatus('sending');
     try {
-      // OJO: Cambié 'questionId' a 'preguntaId' para que calce con tu Flask del backend
       const response = await fetch('https://proyecto-cea.onrender.com/api/trivia', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -281,11 +359,9 @@ function PlayView({ currentQuestions, stats, onUpdateStats, onAddLog, onResetPla
     }
   };
 
-  // MODIFICADO: Bloqueamos el bucle infinito del residuo (%)
   const handleNextQuestion = () => {
     if (!questions.length) return;
     
-    // Si todavía quedan preguntas en el array de Neon, avanzamos
     if (currentIndex < questions.length - 1) {
       const nextIdx = currentIndex + 1;
       setCurrentIndex(nextIdx);
@@ -293,20 +369,17 @@ function PlayView({ currentQuestions, stats, onUpdateStats, onAddLog, onResetPla
       setSelectedAnswer(null);
       setShowFeedback(false);
     } else {
-      // ¡Llegamos al final real de la base de datos!
       setIsFinished(true);
-      localStorage.setItem('cea_play_index', '0'); // Dejamos listo para la próxima sesión
+      localStorage.setItem('cea_play_index', '0');
     }
   };
 
-  // NUEVO: Función para que puedan volver a jugar si quieren
   const handleRestartQuiz = () => {
     setCurrentIndex(0);
     setSelectedAnswer(null);
     setShowFeedback(false);
     setIsFinished(false);
     
-    // Llamamos a la función del padre para poner el marcador en 0/0
     if (onResetPlayerStats) {
       onResetPlayerStats();
     }
@@ -321,7 +394,6 @@ function PlayView({ currentQuestions, stats, onUpdateStats, onAddLog, onResetPla
     );
   }
 
-  // NUEVO: Si terminó, le plantamos esta vista limpia en vez de romper la UI
   if (isFinished) {
     return (
       <div className="text-center p-8 bg-white border border-stone-100 rounded-3xl shadow-xl max-w-md mx-auto">
@@ -343,11 +415,7 @@ function PlayView({ currentQuestions, stats, onUpdateStats, onAddLog, onResetPla
   }
 
   const activeQuestion = questions[currentIndex];
-
-  // Si por un delay raro de carga no hay pregunta activa, evitamos el crash
   if (!activeQuestion) return null;
-
-  // ... AQUÍ DEBAJO SIGUE TU CÓDIGO DEL RETURN FORMATEADO (HTML/JSX) QUE YA TIENES IGUAL ...
 
   return (
     <div id="play-interface" className="fade-in max-w-lg mx-auto py-3 px-4">
@@ -479,7 +547,6 @@ function AdminView({
     e.preventDefault();
     if (!consejoTexto.trim()) return;
     
-    // Llama al fetch real del componente padre
     onAddConsejo({ 
       texto: consejoTexto, 
       categoria: consejoCategoria, 
@@ -498,7 +565,6 @@ function AdminView({
       return;
     }
     
-    // Llama al fetch real del componente padre
     onAddQuestion({ 
       pregunta: questionTexto, 
       opcionA: questionOpcionA, 
@@ -553,7 +619,7 @@ app.listen(5000, () => console.log('Servidor en puerto 5000'));`;
     <div id="admin-interface" className="fade-in max-w-6xl mx-auto py-4 px-4 relative z-10">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 glass p-6 rounded-3xl border border-white/40 shadow-md mb-8">
         <div>
-          <h1 className="text-2xl font-display font-black text-emerald-950 tracking-tight">Control Panel CEA</h1>
+          <h1 className="text-2xl font-display font-black text-emerald-955 tracking-tight">Control Panel CEA</h1>
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
@@ -719,12 +785,9 @@ app.listen(5000, () => console.log('Servidor en puerto 5000'));`;
 // === COMPONENTE PRINCIPAL ORQUESTADOR ===
 export default function App() {
   const [activeView, setActiveView] = useState('totem');
-  
-  // 1. MODIFICADO: Estados empiezan vacíos porque ahora mandan los datos de Neon SQL
   const [consejos, setConsejos] = useState([]);
   const [questions, setQuestions] = useState([]);
 
-  // Estadísticas del jugador
   const [stats, setStats] = useState(() => {
     const saved = localStorage.getItem('cea_stats');
     return saved ? JSON.parse(saved) : { correctas: 0, totalJugado: 0 };
@@ -734,21 +797,14 @@ export default function App() {
     setStats({ correctas: 0, totalJugado: 0 });
   };
 
-  // Consola de red
   const [logs, setLogs] = useState([]);
-
-  // Proteccion de Admin
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
   const [adminUser, setAdminUser] = useState('');
   const [adminPass, setAdminPass] = useState('');
-
-  // Alerta de credenciales incorrectas en Ventana Emergente
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [errorModalMessage, setErrorModalMessage] = useState('');
 
-  // 2. NUEVO/MODIFICADO: Efecto inicial para jalar TODO (Preguntas y Consejos) desde tu Flask
   useEffect(() => {
-    // Cargar preguntas de la BD
     fetch('https://proyecto-cea.onrender.com/api/trivia')
       .then(res => res.json())
       .then(data => {
@@ -761,12 +817,9 @@ export default function App() {
         setQuestions(saved ? JSON.parse(saved) : INITIAL_PREGUNTAS);
       });
 
-    // Cargar consejos de la BD (Hacemos un GET global a tu ruta)
     fetch('https://proyecto-cea.onrender.com/api/consejo')
       .then(res => res.json())
       .then(data => {
-        // Como tu backend actual devuelve uno random, lo metemos en un arreglo para el panel admin.
-        // Tip de pro: Si en el futuro quieres listar todos, haz una ruta /api/consejos en Flask.
         if (data && data.id) {
           setConsejos([data]);
         }
@@ -778,12 +831,10 @@ export default function App() {
       });
   }, []);
 
-  // Persistir estadísticas locales
   useEffect(() => {
     localStorage.setItem('cea_stats', JSON.stringify(stats));
   }, [stats]);
 
-  // Manejador del parámetro de URL rápido "?view=play"
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const viewParam = params.get('view');
@@ -810,7 +861,6 @@ export default function App() {
     }));
   };
 
-  // 3. MODIFICADO: POST real para Consejos
   const handleAddConsejo = (newConsejo) => {
     fetch('https://proyecto-cea.onrender.com/api/consejo', {
       method: 'POST',
@@ -837,7 +887,6 @@ export default function App() {
     .catch(err => console.error(err));
   };
 
-  // 4. MODIFICADO: POST real para Preguntas
   const handleAddQuestion = (newQ) => {
     fetch('https://proyecto-cea.onrender.com/api/trivia', {
       method: 'POST',
@@ -868,7 +917,6 @@ export default function App() {
     .catch(err => console.error(err));
   };
 
-  // 5. ENLACE DE BORRADO DE TRIVIA CON EL BACKEND 
   const handleDeleteQuestion = (idCompleto) => {
     const idLimpio = String(idCompleto).replace('trivia-', '');
     
@@ -882,7 +930,6 @@ export default function App() {
     .catch(err => console.error("Error al borrar pregunta de Neon:", err));
   };
 
-  // 6. ENLACE DE BORRADO DE CONSEJOS CON EL BACKEND
   const handleDeleteConsejo = (idCompleto) => {
     const idLimpio = String(idCompleto).replace('consejo-', '');
 
@@ -924,8 +971,6 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-100 flex flex-col justify-between select-none">
-      
-      {/* HEADER PRINCIPAL */}
       <header className="glass shadow-sm py-4 px-6 border-b border-white/20 sticky top-0 z-40">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2 cursor-pointer" onClick={() => setActiveView('totem')}>
@@ -963,7 +1008,6 @@ export default function App() {
         </div>
       </header>
 
-      {/* CONTENIDO PRINCIPAL */}
       <main className="flex-1 py-6 relative">
         <AnimatePresence mode="wait">
           {activeView === 'totem' && (
@@ -1041,16 +1085,32 @@ export default function App() {
         </AnimatePresence>
       </main>
 
-      {/* FOOTER DEL CEA */}
       <footer className="glass py-4 text-center text-[11px] text-emerald-950 font-semibold border-t border-white/20">
         <p>© 2026 Centro de Educación Ambiental (CEA).</p>
       </footer>
 
-      {/* VENTANA EMERGENTE PERSONALIZADA: ERROR DE CREDENCIALES */}
+      {/* ========================================================= */}
+      {/* 🟢 BOTÓN FLOTANTE DE WHATSAPP (SEÑALÉTICA DE SOPORTE) */}
+      {/* ========================================================= */}
+      <a 
+        href="https://wa.me/56995053561?text=Hola!%20Estoy%20en%20el%20Totem%20CEA%20de%20INACAP%20y%20tengo%20una%20consulta." 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-50 bg-[#25D366] hover:bg-[#20ba5a] text-white p-3.5 rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 group border-2 border-white/30"
+        title="Contactar Soporte CEA vía WhatsApp"
+      >
+        <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
+          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397 0 11.948 0c3.179.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.902-11.89 11.902-2.01-.001-3.986-.51-5.742-1.479L0 24zm6.59-4.846c1.66.983 3.308 1.493 4.75 1.493 5.405 0 9.8-4.386 9.803-9.789.002-2.618-1.012-5.08-2.859-6.93C16.44 2.08 13.971 1.06 11.36 1.06c-5.406 0-9.804 4.388-9.807 9.793-.001 1.734.475 3.426 1.38 4.9l-.937 3.421 3.513-.92c1.42.775 2.955 1.155 4.541 1.155zM16.518 14.2c-.297-.15-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.074-.297-.15-1.255-.463-2.39-1.477-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+        </svg>
+        
+        <span className="absolute right-14 bg-stone-900 text-white text-[10px] font-mono uppercase px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap shadow-md border border-stone-800">
+          ¿Dudas? Chat CEA
+        </span>
+      </a>
+
       <AnimatePresence>
         {showErrorModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -1059,7 +1119,6 @@ export default function App() {
               className="absolute inset-0 bg-stone-900/60 backdrop-blur-xs"
             />
             
-            {/* Modal Content */}
             <motion.div
               initial={{ scale: 0.95, opacity: 0, y: 15 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
@@ -1089,7 +1148,6 @@ export default function App() {
           </div>
         )}
       </AnimatePresence>
-
     </div>
   );
 }
